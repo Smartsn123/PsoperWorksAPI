@@ -19,4 +19,4 @@ python server.py
 Goto http://127.0.0.1:8080/  and. fill and submit the form
 
 
-![Alt text](img.jpg?raw=true "Screenshot")
+![Alt text](img.png?raw=true "Screenshot")
