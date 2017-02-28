@@ -24,9 +24,11 @@ def IsValidMail(email):
 	return ""
 
 def createLead(info,db):
-	lead = Lead.create(name=info['name'],company_name=info['company'],email={"email": info['email'],"category": "Work"},phone_numbers=[{'number':info['phone'],'category':'mobile'}])
+	print info['email'].split('@')[1]
+	if not (  ( info['email'].split('@')[1])  in ['gmail.com','yahoo.com']):
+		lead = Lead.create(name=info['name'],company_name=info['company'],email={"email": info['email'],"category": "Work"},phone_numbers=[{'number':info['phone'],'category':'mobile'}])
 	db.leads.insert(info)
-	return lead.id
+	return True
 
 
 
@@ -74,6 +76,6 @@ def submit():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1',port=8000)
+    app.run(debug=True, host='127.0.0.1',port=8080)
 
     
