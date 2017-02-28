@@ -36,7 +36,7 @@ def hello_world():
 
 @app.route('/leads', methods=['GET'])
 def getAll():
-	print "++++++++++++++"
+	#print "++++++++++++++"
 	db = get_db('leads')
 	info = db.leads.find({}, {'_id': False})
 	info =list(info)
@@ -63,7 +63,7 @@ def submit():
 		info = {"name" : name,'company':company , 'email':email ,'phone':phone}
 		resp = createLead(info,db)
 		print resp
-		print "########Success###############"
+		#print "########Success###############"
 		info =json.dumps(dict(info),default=lambda x: None )
 		resp = Response(info, status=200, mimetype='application/json')
 		return resp
@@ -74,6 +74,6 @@ def submit():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1',port=8080)
+    app.run(debug=True, host='127.0.0.1',port=8000)
 
     
