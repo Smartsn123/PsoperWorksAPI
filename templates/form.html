@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+ <body>
+  <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+  <nav>
+    <div class="nav-wrapper teal">
+      <a href="#" class="brand-logo">ProsperWorks Lead Pusher</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="!">Sass</a></li>
+        <li><a href="!">Components</a></li>
+        <li><a href="!">JavaScript</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class="row">
+   <div class ="card ">
+    <form class="col s6">
+      <div class="row">
+        <div class="input-field col s6">
+          <i class="material-icons prefix">account_circle</i>
+          <input  name = "name" id="name" type="text" class="validate">
+          <label for="first_name" class="active" >Name</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s6">
+          <i class="material-icons prefix">phone</i>
+          <input id="phone" name="phone"  type="tel" class="validate">
+          <label for="phone" class="active" data-error="Enter Valid Phone No." >Phone</label>
+        </div>
+      </div>
+      
+      
+      <div class="row">
+        <div class="input-field col s6">
+          <i class="material-icons prefix">mailbox</i>
+          <input id="email" name="email"   type="email" class="validate">
+          <label for="email" class="active" data-error="Enter Valid Email Id" >Email</label>
+        </div>
+      </div>
+
+
+      <div class="row">
+    <div class="col s6">
+      <div class="row">
+        <div class="input-field col s6">
+          <i class="material-icons prefix">account_balance</i>
+          <input type="text"  name="company"  id="company" class="autocomplete">
+          <label for="company"class="active" >Company</label>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="row">
+  <button class="btn waves-effect waves-light" type="button" id='submit' name="action" onclick="submitForm()">Submit
+  </button>
+    <div class="preloader-wrapper big" id='preloader'>
+      <div class="spinner-layer spinner-blue">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+      </div>
+  </div>
+</form>
+</div> 
+
+<div class="card-small col s6">
+   <div class="collection">
+        <a href="#!" class="collection-item active"><h4>Local Database Leads</h4></a>
+      </div>     
+    <table id="table">
+      <tr>
+        <th>Name</th> 
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Company</th>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+  
+ 
+ </body>
+ <script>
+
+$(document).ready( function(){
+
+  $.ajax({
+  url: 'leads',
+  success: function(info){
+         var inf =JSON.parse(info)
+         
+         for(var i =0 ; i< inf.length;i++){ 
+              var resp = inf[i]; 
+              console.log(resp);
+              var table_row = "<tr><td>"+resp.name+"</td><td>"+resp.email+"</td><td>"+resp.phone+"</td><td>"+resp.company+"</td></tr>";
+              
+              $("table").append(table_row);
+            }
+  },
+  error:function(error){
+     console.log("Error");
+      Materialize.toast(error, 2000) ;
+
+  },
+  dataType: "text"
+   });
+
+});
+
+
+function submitForm(){
+  console.log("posting");
+  data = {
+    'name':$('#name').val(),
+    'phone':$('#phone').val(),
+    'email':$('#email').val(),
+    'company':$('#company').val()
+  };
+  $('#preloader').addClass('active');
+  $.ajax({
+  type: "POST",
+  url: 'submit',
+  data:JSON.stringify(data) ,
+  success: function(resp){
+             $('#preloader').removeClass('active');
+              resp =JSON.parse(resp)
+              console.log(resp);
+              //Materialize.toast("", 2000) ;
+              var table_row = "<tr><td>"+resp.name+"</td><td>"+resp.email+"</td><td>"+resp.phone+"</td><td>"+resp.company+"</td></tr>";
+              $("table").append(table_row);
+              //Materialize.updateTextFields(); 
+  },
+  error:function(error){
+      $('#preloader').removeClass('active');
+     console.log("Error");
+     Materialize.toast(error, 2000) ;
+   },
+  dataType: "text"
+   });
+}
+</script>
+ </html>
